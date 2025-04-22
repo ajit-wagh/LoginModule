@@ -39,6 +39,17 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth->auth.requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll())  
 				.authorizeHttpRequests(auth->auth.requestMatchers("/auth/user/**").authenticated())
 				.authorizeHttpRequests(auth->auth.requestMatchers("/auth/admin/**").authenticated())
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(
+								"/auth/welcome",
+								"/auth/addNewUser",
+								"/auth/generateToken",
+								"/v3/api-docs/**",          // ✅ for Swagger
+								"/swagger-ui/**",           // ✅ for Swagger
+								"/swagger-ui.html"          // ✅ for Swagger
+						).permitAll()
+				)
+
 				.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  
 				.authenticationProvider(authenticationProvider()) 
 				.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class) 
