@@ -1,5 +1,6 @@
 package com.loginModule.User.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException; 
 import org.springframework.web.bind.annotation.*; 
 
+@Slf4j
 @RestController
 @RequestMapping("/auth") 
 public class UserController { 
@@ -70,7 +72,8 @@ public class UserController {
 	} 
 
 	@PostMapping("/generateToken") 
-	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) { 
+	public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())); 
 		if (authentication.isAuthenticated()) { 
 			return jwtService.generateToken(authRequest.getUsername()); 
